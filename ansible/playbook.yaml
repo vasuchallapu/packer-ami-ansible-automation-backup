@@ -1,0 +1,62 @@
+- hosts: all
+  become: yes
+  tasks:
+    # Update the package list
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+
+    # Install CloudWatch Agent
+    - name: Download CloudWatch Agent
+      get_url:
+        url: "https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb"
+        dest: "/tmp/amazon-cloudwatch-agent.deb"
+
+    - name: Install CloudWatch Agent
+      apt:
+        deb: "/tmp/amazon-cloudwatch-agent.deb"
+        state: present
+
+    # Check if amazon-ssm-agent is installed via snap
+    - name: Check if amazon-ssm-agent is installed via snap
+      shell: snap list amazon-ssm-agent
+      register: ssm_installed
+      ignore_errors: true
+
+    # If amazon-ssm-agent is installed via snap, use snap to start the service
+    - name: Ensure amazon-ssm-agent is running (if installed by snap)
+      command: snap start amazon-ssm-agent
+      when: ssm_installed.rc == 0
+
+    # Install AWS SSM Agent via apt if not installed via snap
+    - name: Install AWS SSM Agent (if not installed by snap)
+      apt:
+        name: amazon-ssm-agent
+        state: present
+      when: ssm_installed.rc != 0
+
+    # Start and enable the SSM Agent if installed via apt
+    - name: Ensure amazon-ssm-agent is started (if installed by apt)
+      systemd:
+        name: amazon-ssm-agent
+        state: started
+        enabled: yes
+      when: ssm_installed.rc != 0
+
+    # Install Docker
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Enable and start Docker
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    # Install Git Client
+    - name: Install Git
+      apt:
+        name: git
+        state: present
