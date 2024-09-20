@@ -1,0 +1,42 @@
+name: Build AMI with Packer and Ansible
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build_ami:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install AWS CLI
+      run: sudo apt-get install awscli -y
+
+    - name: Install Packer
+      run: |
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get update && sudo apt-get install packer -y
+
+    - name: Install Ansible
+      run: sudo apt-get install ansible -y
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Initialize Packer template
+      run: packer init packer-ami-golden.pkr.hcl
+
+    - name: Validate Packer template
+      run: packer validate packer-ami-golden.pkr.hcl
+
+    - name: Build AMI with Packer
+      run: packer build packer-ami-golden.pkr.hcl
