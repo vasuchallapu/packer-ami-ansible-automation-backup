@@ -31,6 +31,7 @@ Getting Started
 
 1. Prerequisites
 AWS Account
+
 Packer & Ansible (for local testing)
 3. AWS Credentials
 Add the following secrets in your GitHub repository:
