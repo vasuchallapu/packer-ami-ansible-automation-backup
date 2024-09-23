@@ -6,10 +6,10 @@ This project automates the creation of an AWS AMI using Packer and Ansible, with
 
 The AMI is pre-configured with essential software:
 
-CloudWatch Agent
+**CloudWatch Agent
 AWS SSM Agent
 Docker
-Git
+Git**
 
 Tools Used
 AWS: Cloud platform for AMI creation
