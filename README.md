@@ -1,4 +1,4 @@
-🚀 Packer AMI with Ansible & GitHub Actions
+**🚀 Packer AMI with Ansible & GitHub Actions**
 
 Overview
 
@@ -11,7 +11,7 @@ AWS SSM Agent
 Docker
 Git**
 
-Tools Used
+**Tools Used**
 AWS: Cloud platform for AMI creation
 Packer: Builds the custom AMI
 Ansible: Manages software provisioning
@@ -27,7 +27,7 @@ Project Structure
     └── workflows/
         └── build.yml  # GitHub Actions workflow
 
-Getting Started
+**Getting Started**
 
 1. Prerequisites
 AWS Account
