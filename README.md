@@ -17,7 +17,7 @@ Packer: Builds the custom AMI
 Ansible: Manages software provisioning
 GitHub Actions: Automates the build pipeline
 
-Project Structure
+**Project Structure**
 
 
 ├── ansible/
