@@ -43,6 +43,29 @@
         enabled: yes
       when: ssm_installed.rc != 0
 
+    - name: Install dependencies (curl, unzip)
+      apt:
+        name:
+          - curl
+          - unzip
+        state: present
+        install_recommends: no
+
+    # Download and install AWS CLI v2
+    - name: Download AWS CLI v2
+      get_url:
+        url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        dest: /tmp/awscliv2.zip
+
+    - name: Unzip AWS CLI v2
+      unarchive:
+        src: /tmp/awscliv2.zip
+        dest: /tmp
+        remote_src: yes
+
+    - name: Install AWS CLI v2
+      command: /tmp/aws/install  
+
     # Install Docker
     - name: Install Docker
       apt:
