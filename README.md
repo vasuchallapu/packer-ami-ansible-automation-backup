@@ -30,13 +30,13 @@ GitHub Actions: Automates the build pipeline
 **Getting Started**
 
 1. Prerequisites
-AWS Account
+**AWS Account**
 
 Packer & Ansible (for local testing)
-3. AWS Credentials
+**3. AWS Credentials**
 Add the following secrets in your GitHub repository:
 AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 
-4. Trigger the Pipeline
+**4. Trigger the Pipeline**
 Push to the repository and the GitHub Actions workflow will automatically build the AMI.
